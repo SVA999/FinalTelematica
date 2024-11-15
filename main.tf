@@ -63,8 +63,8 @@ resource "null_resource" "provision" {
     }
   }
 
-  provisioner "remote-exec" {
-    inline = [      
+provisioner "remote-exec" {
+    inline = [   
       "chmod +x /tmp/install.sh",
       "/tmp/install.sh"
     ]
