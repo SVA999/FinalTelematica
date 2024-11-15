@@ -53,8 +53,8 @@ resource "null_resource" "provision" {
   depends_on = [aws_instance.my_instance]
 
   provisioner "file" {
-    source      = "./install.sh"
-    destination = "/tmp/install.sh"
+    source      = "./docker-compose.yml"
+    destination = "/tmp/docker-compose.yml"
     connection {
       type        = "ssh"
       user        = "ubuntu"  # Ajusta el usuario según la AMI
@@ -65,8 +65,8 @@ resource "null_resource" "provision" {
 
 provisioner "remote-exec" {
     inline = [   
-      "chmod +x /tmp/install.sh",
-      "/tmp/install.sh"
+      "chmod +x /tmp/docker-compose.yml",
+      "/tmp/docker-compose.yml"
     ]
     connection {
       type        = "ssh"
