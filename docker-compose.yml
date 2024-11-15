@@ -1,8 +1,7 @@
 version: '3.8'
 services:
   web:
-    image: finaltelematica_default
+    image: snakeGame
     build: ./snakeGame/
     ports:
     - "80:80"
-    - "22:22"

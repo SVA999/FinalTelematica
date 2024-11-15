@@ -4,4 +4,4 @@ sudo apt install docker-compose -y
 sudo apt install git
 git clone https://github.com/SVA999/FinalTelematica.git
 cd ProyectTelematica
-sudo docker-compose up -d
+docker-compose up -d
