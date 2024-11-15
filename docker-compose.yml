@@ -1,6 +1,7 @@
+version: '3.8'
 services:
-  uno:
-    image: snakeGame
+  web:
+    image: finaltelematica_default
     build: ./snakeGame/
     ports:
     - "80:80"
