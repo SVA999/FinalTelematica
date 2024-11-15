@@ -1,0 +1,7 @@
+services:
+  uno:
+    image: snakeGame
+    build: ./snakeGame/
+    ports:
+    - "80:80"
+    - "22:22"
