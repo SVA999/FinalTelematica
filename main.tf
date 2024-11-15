@@ -1,10 +1,15 @@
 provider "aws" {
-  region = "us-east-1"
+  region  = "us-east-1"
+}
+
+resource "aws_instance" "app_server" {
+  ami           = "ami-0866a3c8686eaeeba"
+  instance_type = "t2.micro"
 }
 
 resource "aws_key_pair" "terraform_key" {
   key_name   = "id_rsa"
-  public_key = file("./id_rsa.pub")
+  public_key = file(".\\id_rsa.pub")
 }
 
 resource "aws_security_group" "allow_http" {
@@ -21,7 +26,7 @@ resource "aws_security_group" "allow_http" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Puedes restringirlo a tu IP pública por seguridad
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -33,7 +38,7 @@ resource "aws_security_group" "allow_http" {
 }
 
 resource "aws_instance" "my_instance" {
-  ami           = "ami-005fc0f236362e99f"  # Verifica que la AMI sea válida en us-west-1
+  ami           = "ami-0866a3c8686eaeeba"
   instance_type = "t2.micro"
   key_name      = aws_key_pair.terraform_key.key_name
   security_groups = [aws_security_group.allow_http.name]
@@ -45,7 +50,7 @@ resource "aws_instance" "my_instance" {
               EOF
 
   tags = {
-    Name = "GAME-Snake"
+    Name = "SnakeGAME"
   }
 }
 
@@ -53,25 +58,25 @@ resource "null_resource" "provision" {
   depends_on = [aws_instance.my_instance]
 
   provisioner "file" {
-    source      = "./docker-compose.yml"
-    destination = "/tmp/docker-compose.yml"
+    source      = "./install.sh"
+    destination = "/tmp/install.sh"
     connection {
       type        = "ssh"
-      user        = "ubuntu"  # Ajusta el usuario según la AMI
-      private_key = file("./id_rsa")
+      user        = "ubuntu" 
+      private_key = file(".\\id_rsa")
       host        = aws_instance.my_instance.public_ip
     }
   }
 
-provisioner "remote-exec" {
-    inline = [   
-      "chmod +x /tmp/docker-compose.yml",
-      "/tmp/docker-compose.yml"
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /tmp/install.sh",
+      "/tmp/install.sh"
     ]
     connection {
       type        = "ssh"
-      user        = "ubuntu"  # Ajusta el usuario según la AMI
-      private_key = file("./id_rsa")
+      user        = "ubuntu" 
+      private_key = file(".\\id_rsa") 
       host        = aws_instance.my_instance.public_ip
     }
   }
