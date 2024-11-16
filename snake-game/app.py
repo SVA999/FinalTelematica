@@ -3,7 +3,7 @@ import click
 import flask
 from flask import Flask
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 # the minimal Flask application
 @app.route('/')

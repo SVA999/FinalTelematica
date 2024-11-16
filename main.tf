@@ -21,8 +21,8 @@ resource "aws_instance" "my_instance" {
 
   user_data = <<-EOF
               #!/bin/bash
-              chmod +x /tmp/install.sh
-              /tmp/install.sh
+              chmod +x ./install.sh
+              ./install.sh
               EOF
 
   tags = {
@@ -66,7 +66,7 @@ resource "null_resource" "provision" {
 
   provisioner "file" {
     source      = "./install.sh"
-    destination = "/tmp/install.sh"
+    destination = "./install.sh"
     connection {
       type        = "ssh"
       user        = "ubuntu" 
@@ -77,8 +77,8 @@ resource "null_resource" "provision" {
 
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /tmp/install.sh",
-      "/tmp/install.sh"
+      "chmod +x ./install.sh",
+      "./install.sh"
     ]
     connection {
       type        = "ssh"
