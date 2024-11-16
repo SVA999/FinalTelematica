@@ -19,11 +19,29 @@ resource "aws_instance" "my_instance" {
   key_name      = aws_key_pair.terraform_key.key_name
   security_groups = [aws_security_group.allow_http.name]
 
-  user_data = <<-EOF
-              #!/bin/bash
-              chmod +x ./install.sh
-              ./install.sh
-              EOF
+  provisioner "file" {
+    source      = "./install.sh"
+    destination = "/home/ubuntu/install.sh"
+    connection {
+      type        = "ssh"
+      user        = "ubuntu" 
+      private_key = file(".\\id_rsa")
+      host        = self.public_ip
+    }
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x "/home/ubuntu/install.sh"",
+      ""/home/ubuntu/install.sh""
+    ]
+    connection {
+      type        = "ssh"
+      user        = "ubuntu" 
+      private_key = file(".\\id_rsa") 
+      host        = self.public_ip
+    }
+  }
 
   tags = {
     Name = "SnakeGAME"
@@ -58,33 +76,5 @@ resource "aws_security_group" "allow_http" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-resource "null_resource" "provision" {
-  depends_on = [aws_instance.my_instance]
-
-  provisioner "file" {
-    source      = "./install.sh"
-    destination = "./install.sh"
-    connection {
-      type        = "ssh"
-      user        = "ubuntu" 
-      private_key = file(".\\id_rsa")
-      host        = aws_instance.my_instance.public_ip
-    }
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "chmod +x ./install.sh",
-      "./install.sh"
-    ]
-    connection {
-      type        = "ssh"
-      user        = "ubuntu" 
-      private_key = file(".\\id_rsa") 
-      host        = aws_instance.my_instance.public_ip
-    }
   }
 }
