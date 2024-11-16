@@ -32,8 +32,8 @@ resource "aws_instance" "my_instance" {
 
   provisioner "remote-exec" {
     inline = [
-      "chmod +x "/home/ubuntu/install.sh"",
-      ""/home/ubuntu/install.sh""
+      "chmod +x /home/ubuntu/install.sh",
+      "/home/ubuntu/install.sh"
     ]
     connection {
       type        = "ssh"
