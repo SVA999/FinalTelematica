@@ -65,7 +65,7 @@ resource "null_resource" "provision" {
   depends_on = [aws_instance.my_instance]
 
   provisioner "file" {
-    source      = "~/final-telematica/install.sh"
+    source      = "./install.sh"
     destination = "/tmp/install.sh"
     connection {
       type        = "ssh"
