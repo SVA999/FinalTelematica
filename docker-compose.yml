@@ -1,6 +1,6 @@
 services:
   uno:
-    image: snake-game
-    build: ./snake-game/
+    image: saludos
+    build: ./saludos/
     ports:
       - "80:80"    

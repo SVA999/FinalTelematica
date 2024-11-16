@@ -32,6 +32,18 @@ resource "aws_instance" "my_instance" {
 
   provisioner "remote-exec" {
     inline = [
+      "rm install.sh",
+      "touch install.sh",     
+      "cat > install.sh <<EOF",
+      "#!/bin/bash",
+      "sudo apt update",
+      "sudo apt install docker-compose -y",
+      "sudo apt install git",
+      "git clone https://github.com/SVA999/final-telematica",
+      "cd final-telematica",
+      "sudo docker-compose up -d",
+      "EOF",
+      "chmod +x /home/ubuntu/install.sh",
       "bash /home/ubuntu/install.sh"
     ]
     connection {
@@ -43,7 +55,7 @@ resource "aws_instance" "my_instance" {
   }
 
   tags = {
-    Name = "SnakeGAME"
+    Name = "SaludosPAGE"
     Origin = "Terraform"
   }
 }
